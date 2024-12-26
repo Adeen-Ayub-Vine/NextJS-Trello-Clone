@@ -8,6 +8,11 @@ export default clerkMiddleware(async (auth, req) => {
 
   const currentPath = req.nextUrl.pathname;
 
+  // Allow access to /select-org if the user is authenticated, even with an orgId
+  if (userId && orgId && currentPath === "/select-org") {
+    return NextResponse.next();
+  }
+
   if (userId && isPublicRoute(req)) {
     let path = "/select-org";
 
