@@ -4,6 +4,7 @@ const SettingsPage = () => {
   return (
     <div className="w-full">
      <OrganizationProfile
+      routing="hash" // Enable hash-based routing
       appearance={{
         elements: {
           rootBox: {
