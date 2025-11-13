@@ -1,31 +1,23 @@
+import { Separator } from "@/components/ui/separator";
 
-import { Button } from "@/components/ui/button";
-import { db } from "@/lib/db";
+import Info from "./_components/info";
+import BoardList from "./_components/board-list";
+import { Suspense } from "react";
+//import { checkSubscription } from "@/lib/subscription";
 
-const OrganizationIdPage = async () => {
-    const boards = await db.board.findMany();
+export default async function OrganizationIdPage() {
+  //const isPro = await checkSubscription();
 
-    return (
-        <div className="flex flex-col space-y-4">
-            <form action={create}>
-                <input
-                    id="title"
-                    name="title"
-                    required
-                    placeholder="Enter a board title"
-                    className="border border-black p-1"
-                />
-                <Button type="submit">Submit</Button>
-            </form>
-            <div className="space-y-2">
-                {boards.map((board) => (
-                    <div key={board.id}>
-                        Board Title: {board.title}
-                    </div>
-                ))}
-            </div>
-        </div>
-    )
+  return (
+    <div className="w-full mb-20">
+      <Info isPro={isPro} />
+
+      <Separator className="my-4" />
+      <div className="px-2 md:px-4">
+        <Suspense fallback={<BoardList.Skeleton />}>
+          <BoardList />
+        </Suspense>
+      </div>
+    </div>
+  );
 }
-
-export default OrganizationIdPage;
