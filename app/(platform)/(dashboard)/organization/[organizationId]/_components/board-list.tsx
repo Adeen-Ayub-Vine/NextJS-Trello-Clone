@@ -10,7 +10,7 @@ import { FormPopover } from "@/components/form/form-popover";
 // import { getAvailableCount } from "@/lib/org-limit";
 // import { checkSubscription } from "@/lib/subscription";
 
-export default async function BoardList() {
+export const BoardList = async () => {
   const { orgId } = await auth();
 
   if (!orgId) {
