@@ -40,7 +40,7 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
           console.error("Failed to get images from unsplash");
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
         setImages(defaultImages);
       } finally {
         setIsLoading(false);
@@ -79,6 +79,7 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
               name={id}
               className="hidden"
               checked={selectedImageId === image.id}
+              onChange={() => setSelectedImageId(image.id)}
               disabled={pending}
               value={`${image.id}|${image.urls.thumb}|${image.urls.full}|${image.links.html}|${image.user.name}`}
             />
@@ -107,4 +108,4 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
       <FormErrors id="image" errors={errors} />
     </div>
   );
-}
+};
