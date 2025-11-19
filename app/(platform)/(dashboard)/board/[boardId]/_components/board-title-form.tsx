@@ -66,7 +66,7 @@ export const BoardTitleForm = ({ board }: BoardTitleFormProps) => {
           id="title"
           onBlur={onBlur} //saves updated title when clicked outside
           defaultValue={title}
-          className="text-lg font-bold px-[7px] py-1 h-7 bg-transparent focus-visible:outline-none focus-visible:ring-transparent border-none"
+          className="text-lg font-bold px-[7px] py-1 h-7 w-auto bg-transparent focus-visible:outline-none focus-visible:ring-transparent border-none"
         />
       </form>
     );
