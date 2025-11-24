@@ -9,7 +9,10 @@ interface BoardIdPageProps {
   };
 }
 
-export const BoardIdPage = async ({ params }: BoardIdPageProps) => {
+const BoardIdPage = async ({ params }: BoardIdPageProps) => {
+  const resolvedParams = await params;
+  const { boardId } = resolvedParams;
+
   const { orgId } = await auth();
 
   if (!orgId) {
@@ -18,7 +21,7 @@ export const BoardIdPage = async ({ params }: BoardIdPageProps) => {
 
   const lists = await db.list.findMany({
     where: {
-      boardId: params.boardId,
+      boardId: boardId,
       board: {
         orgId,
       },
@@ -39,7 +42,9 @@ export const BoardIdPage = async ({ params }: BoardIdPageProps) => {
 
   return (
     <div className="p-4 h-full overflow-x-auto">
-      <ListContainer boardId={params.boardId} data={lists} />
+      <ListContainer boardId={boardId} data={lists} />
     </div>
   );
 };
+
+export default BoardIdPage;

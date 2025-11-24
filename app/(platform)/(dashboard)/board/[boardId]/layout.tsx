@@ -9,6 +9,9 @@ export const generateMetadata = async ({
 }: {
   params: { boardId: string };
 }) => {
+  const resolvedParams = await params;
+  const { boardId } = resolvedParams;
+
   const { orgId } = await auth();
 
   if (!orgId) {
@@ -19,7 +22,7 @@ export const generateMetadata = async ({
 
   const board = await db.board.findUnique({
     where: {
-      id: params.boardId,
+      id: boardId,
       orgId,
     },
   });
@@ -38,6 +41,9 @@ export default async function BoardIdLayout({
     boardId: string;
   };
 }) {
+  const resolvedParams = await params;
+  const { boardId } = resolvedParams;
+
   const { orgId } = await auth();
 
   if (!orgId) {
@@ -46,7 +52,7 @@ export default async function BoardIdLayout({
 
   const board = await db.board.findUnique({
     where: {
-      id: params.boardId,
+      id: boardId,
       orgId,
     },
   });

@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
-
 import { ListWithCards } from "@/custom-types";
 import { ListForm } from "./list-form";
-import ListItem from "./list-item";
+import { ListItem } from "./list-item";
 import { useAction } from "@/hooks/use-action";
 import { updateListOrder } from "@/actions/update-list-order";
 import { toast } from "sonner";
@@ -36,7 +35,7 @@ export const ListContainer = ({ data, boardId }: ListContainerProps) => {
 
   const { execute: executeUpdateCardOrder } = useAction(updateCardOrder, {
     onSuccess() {
-      toast.success("List reordered");
+      toast.success("Card reordered");
     },
     onError(error) {
       toast.error(error);
@@ -56,7 +55,7 @@ export const ListContainer = ({ data, boardId }: ListContainerProps) => {
       return;
     }
 
-    // Dropped in the same position
+    // if dropped in the same position
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
@@ -71,6 +70,8 @@ export const ListContainer = ({ data, boardId }: ListContainerProps) => {
       );
 
       setOrderedData(items);
+
+      // Trigger server actions to update backend
       executeUpdateListOrder({
         items,
         boardId,
@@ -79,7 +80,7 @@ export const ListContainer = ({ data, boardId }: ListContainerProps) => {
 
     // User moves a card
     if (type === "card") {
-      let newOrderedData = [...orderedData];
+      const newOrderedData = [...orderedData];
 
       // Source and destination list
       const sourceList = newOrderedData.find(
@@ -119,20 +120,23 @@ export const ListContainer = ({ data, boardId }: ListContainerProps) => {
         sourceList.cards = reorderedCards;
 
         setOrderedData(newOrderedData);
-        //  TODO: Trigger server actions
+
+        // Trigger server actions to update backend
         executeUpdateCardOrder({
           boardId,
           items: reorderedCards,
         });
-      } else {
-        // User moves the card to another list
+      }
+
+      // User moves the card to another list
+      else {
+        // Remove card from the source list
         const [movedCard] = sourceList.cards.splice(source.index, 1);
 
         // Assign new listId to the moved card
         movedCard.listId = destination.droppableId;
 
         // Add the card to the destination list
-
         destinationList.cards.splice(destination.index, 0, movedCard);
 
         sourceList.cards.forEach((card, index) => {
@@ -140,14 +144,13 @@ export const ListContainer = ({ data, boardId }: ListContainerProps) => {
         });
 
         // Update the order for each card in the destination list
-
         destinationList.cards.forEach((card, index) => {
           card.order = index;
         });
 
         setOrderedData(newOrderedData);
-        // TODO: server action
 
+        // Trigger server actions to update backend
         executeUpdateCardOrder({
           boardId,
           items: destinationList.cards,

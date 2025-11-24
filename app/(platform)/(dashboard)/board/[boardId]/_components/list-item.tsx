@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { ListWithCards } from "@/custom-types";
 import { ListHeader } from "./list-header";
 import CardForm from "./card-form";
-import CardItem from "./card-item";
+import { CardItem } from "./card-item";
 
 interface ListItemProps {
   data: ListWithCards;
@@ -26,12 +26,8 @@ export const ListItem = ({ data, index }: ListItemProps) => {
   const enableEditing = () => {
     setIsEditing(true);
     setTimeout(() => {
-      focusEditor();
+      textAreaRef.current?.focus();
     });
-  };
-
-  const focusEditor = () => {
-    textAreaRef.current?.focus();
   };
 
   return (
@@ -67,7 +63,6 @@ export const ListItem = ({ data, index }: ListItemProps) => {
             </Droppable>
 
             <CardForm
-              focusEditor={focusEditor}
               listId={data.id}
               ref={textAreaRef}
               isEditing={isEditing}

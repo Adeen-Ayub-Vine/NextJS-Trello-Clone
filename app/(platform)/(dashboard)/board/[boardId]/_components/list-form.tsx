@@ -74,7 +74,7 @@ export const ListForm = () => {
             placeholder="Enter list title..."
           />
 
-          <input hidden value={params.boardId} name="boardId" />
+          <input hidden defaultValue={params.boardId} name="boardId" />
 
           <div className="flex items-center gap-x-1">
             <FormSubmit>Add list</FormSubmit>
