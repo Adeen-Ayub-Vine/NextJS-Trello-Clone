@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { createSafeAction } from "@/lib/create-safe-action";
-import { CreateCard } from "./schema";
+import { DeleteCard } from "./schema";
 import { InputType, ReturnType } from "./types";
 import { ACTION, ENTITY_TYPE } from "@prisma/client";
 import { createAuditLog } from "@/lib/create-audit-log";
@@ -18,50 +18,30 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
   }
 
-  const { title, boardId, listId } = data;
+  const { id, boardId } = data;
   let card;
 
   try {
-    const list = await db.list.findUnique({
+    card = await db.card.delete({
       where: {
-        id: listId,
-        board: {
-          orgId,
+        id,
+        List: {
+          board: {
+            orgId,
+          },
         },
       },
     });
 
-    if (!list) {
-      return {
-        error: "List not found",
-      };
-    }
-
-    const lastCard = await db.card.findFirst({
-      where: { listId },
-      orderBy: { order: "desc" },
-      select: { order: true },
-    });
-
-    const newOrder = lastCard ? lastCard.order + 1 : 1;
-
-    card = await db.card.create({
-      data: {
-        title,
-        listId,
-        order: newOrder,
-      },
-    });
-
     await createAuditLog({
-      entityId: card.id,
       entityTitle: card.title,
+      entityId: card.id,
       entityType: ENTITY_TYPE.CARD,
-      action: ACTION.CREATE,
+      action: ACTION.DELETE,
     });
   } catch (error) {
     return {
-      error: "Failed to create card. " + error,
+      error: "Failed to delete card. " + error,
     };
   }
 
@@ -69,4 +49,4 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   return { data: card };
 };
 
-export const createCard = createSafeAction(CreateCard, handler);
+export const deleteCard = createSafeAction(DeleteCard, handler);
