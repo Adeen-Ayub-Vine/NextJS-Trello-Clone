@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { FormInput } from "./form-input";
 import FormSubmit from "./form-submit";
 import { FormPicker } from "./form-picker";
-//import { useProModal } from "@/hooks/use-pro-modal";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 import { ElementRef, useRef } from "react";
 import { X } from "lucide-react";
@@ -34,7 +34,7 @@ export const FormPopover = ({
   align,
   sideOffset = 0,
 }: FormPopoverProps) => {
-  //const proModal = useProModal();
+  const proModal = useProModal();
   const router = useRouter();
   const closeRef = useRef<ElementRef<"button">>(null);
 
@@ -46,7 +46,7 @@ export const FormPopover = ({
     },
     onError(error) {
       toast.error(error);
-     // proModal.onOpen();
+      proModal.onOpen();
     },
   });
 
@@ -93,4 +93,4 @@ export const FormPopover = ({
       </PopoverContent>
     </Popover>
   );
-}
+};

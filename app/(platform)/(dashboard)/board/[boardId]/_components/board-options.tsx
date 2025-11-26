@@ -47,10 +47,10 @@ export default function BoardOptions({ id }: BoardOptionsProps) {
           </Button>
         </PopoverClose>
         <Button
-          variant="destructive"
+          variant="ghost"
           onClick={onDelete}
           disabled={isLoading}
-          className="rounded-none w-full h-auto p-2 px-5 justify-center font-normal text-sm"
+          className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
         >
           Delete this board
         </Button>

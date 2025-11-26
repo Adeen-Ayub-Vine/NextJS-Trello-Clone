@@ -6,9 +6,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { db } from "@/lib/db";
 import Hint from "@/components/hint";
 import { FormPopover } from "@/components/form/form-popover";
-// import { MAX_FREE_BOARDS } from "@/constants/boards";
-// import { getAvailableCount } from "@/lib/org-limit";
-// import { checkSubscription } from "@/lib/subscription";
+import { MAX_FREE_BOARDS } from "@/constants/Max-boards";
+import { getAvailableCount } from "@/lib/org-limit";
+import { checkSubscription } from "@/lib/subscription";
 
 export const BoardList = async () => {
   const { orgId } = await auth();
@@ -26,8 +26,8 @@ export const BoardList = async () => {
     },
   });
 
-  //const availableCount = await getAvailableCount();
-  //const isPro = await checkSubscription();
+  const availableCount = await getAvailableCount();
+  const isPro = await checkSubscription();
 
   return (
     <div className="space-y-4">
@@ -55,9 +55,9 @@ export const BoardList = async () => {
           >
             <p className="text-sm">Create new board</p>
             <span className="text-xs">
-              {/* {isPro
+              {isPro
                 ? "Unlimited"
-                : `${MAX_FREE_BOARDS - availableCount} remaining`} */}
+                : `${MAX_FREE_BOARDS - availableCount} remaining`}
             </span>
             <Hint
               sideOffset={40}
@@ -72,7 +72,7 @@ export const BoardList = async () => {
       </div>
     </div>
   );
-}
+};
 
 BoardList.Skeleton = function SkeletonBoardList() {
   return (
